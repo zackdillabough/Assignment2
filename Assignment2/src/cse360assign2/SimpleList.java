@@ -17,21 +17,43 @@ package cse360assign2;
  */
 public class SimpleList {
 
-	private final int LIST_LENGTH = 10;
+	private final int INIT_LIST_LENGTH = 10;
 	private final int NOT_IN_LIST = -1;
 
 	private int[] list;
 	private int count;
-
+	private int capacity;
+	
+/**
+ * This method moves the contents of one list into another 
+ * You may also specify whether to copy the list and include a leading '0' in
+ * index-0 of the new array.
+ * @param arr1 is the array to be copied into another
+ * @param arr1Size is the size of the user specified array
+ * @param arr2Size is the size of the newly created array
+ * @param flag indicates whether the new array will have a leading 0 or not
+ * 		  (contents of "arr1" copied to new array after index-0)
+ * @return
+ */
+	private int[] moveList(int[] arr1, int arr1Size, int arr2Size, int flag) {
+		int[] newArr = new int[arr2Size];
+		for(int index = 0; index < arr1Size; index++) {
+			if(flag == 1)
+				newArr[index + 1] = arr1[index];
+			else
+				newArr[index] = arr1[index];
+		}
+		return newArr;
+	}
 /**
  * This constructor initializes a SimpleList object with a count of zero,
- * and an empty int-list of size LIST_LENGTH
+ * and an empty int-list of size INIT_LIST_LENGTH
  */
 	public SimpleList() {
-		this.list = new int[LIST_LENGTH];
+		this.list = new int[INIT_LIST_LENGTH];
 		this.count = 0;
+		this.capacity = INIT_LIST_LENGTH;
 	}
-
 	
 /**
  * returns the caller SimpleList's list
@@ -44,37 +66,42 @@ public class SimpleList {
 /**
  * This method adds the parameter to the beginning (index = 0) of the list,
  * and moves all the other integers in the list over. If the list is full, 
- * then the last element "falls off" the list.
- * @param an int to be added to the list
+ * then the list's capacity is increased by 50%
+ * @param an int value to be added to the list
  */
-	public void add(int a) {
+	public void add(int userVal) {
 		int temp1 = 0;
 		int temp2;
 
-		// make sure the SimpleList's list's count 
-		// does not exceed the max list capacity
-		if(this.count() < LIST_LENGTH)
-			this.count += 1;
-		
-		// shift all elements by one index value
-		// (disposing of the last element, if it exists)
-		for(int index = 0; index < this.count() - 1; index ++) {
+		// if this list is full, increase the capacity by 50%
+		if(this.count() == this.capacity) {
+			this.capacity = this.capacity + this.capacity / 2;
+			this.list = moveList(this.list, this.count(), this.capacity, 1);
+			this.list[0] = userVal;
+		} else {
+			// shift all elements by one index value
+			// (disposing of the last element, if it exists)
+			for(int index = 0; index < this.count(); index ++) {
 
-			if(index == 0) 
-				temp1 = this.list[index];
+				if(index == 0) 
+					temp1 = this.list[index];
 
-			temp2 = this.list[index + 1];
-			this.list[index + 1] = temp1;
-			temp1 = temp2;
+				temp2 = this.list[index + 1];
+				this.list[index + 1] = temp1;
+				temp1 = temp2;
+			}
+			// add parameter value to the first index of the list, 
+			// and increment count
+			this.list[0] = userVal;
 		}
-		// add parameter value to the first index of the list
-		this.list[0] = a;
+			this.count += 1;
 	}
 	
 /**
  * If the parameter exists within the given SimpleList list, 
  * then this method will remove the parameter from the list, shift the other
- * elements, and decrement the list's count.
+ * elements, and decrement the list's count. If the list is more than 25%
+ * empty, then the size of the list is decreased.
  * @param an int to be removed from the list
  */
 	public void remove(int target) {
@@ -88,15 +115,16 @@ public class SimpleList {
 
 				if(this.list[index] == target) {
 					isFound = true;
-					// if the current indexed element is also the last element in the list,
-					// then set it equal to 0
+					// if the current indexed element is also the last element
+					// in the list, then set it equal to 0
 					if(index == this.count() - 1)
 						this.list[this.count() - 1] = 0;
-					// otherwise, remove the target value from list by shifting 
+					// otherwise, remove the target value from list by shifting
 					// the other values to "the left" by 1 index 
 					// ("covering" the target value)
 					else 
-						for(int index2 = index; index2 < this.count() - 1; index2 ++)
+						for(int index2 = index; 
+								index2 < this.count - 1; index2 ++)
 							this.list[index2] = this.list[index2 + 1];
 
 					this.list[this.count() - 1] = 0;
@@ -105,6 +133,13 @@ public class SimpleList {
 
 				index++;
 			}
+		
+		// if the list is less than 75% full, decrease list capacity by 25%
+		if(this.count() < 3 * this.capacity / 4) {
+			this.capacity = 3 * this.capacity / 4;
+			this.list = moveList(this.list, this.count, this.capacity, 0);
+		}
+		
 	}
 
 /**
