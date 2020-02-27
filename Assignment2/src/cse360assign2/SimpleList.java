@@ -1,8 +1,7 @@
 /** Name:		 Zack Dillabough
   * ClassID:	 441
   * Assignment:	 1
-  * Description: This assignment is designed to practice 
-  * 			 using Javadoc, creating unit tests and using Junit.
+  * Description: This assignment is designed to practice using github.
  **/
 package cse360assign2;
 
@@ -18,8 +17,6 @@ package cse360assign2;
 public class SimpleList {
 
 	private final int INIT_LIST_LENGTH = 10;
-	private final int NOT_IN_LIST = -1;
-	private final int LIST_EMPTY = -1;
 
 	private int[] list;
 	private int count;
@@ -192,7 +189,7 @@ public class SimpleList {
 			index += 1;
 		}
 
-		return NOT_IN_LIST;
+		return -1;
 	}
 
 /**
