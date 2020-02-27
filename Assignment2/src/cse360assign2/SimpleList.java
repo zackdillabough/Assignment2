@@ -19,10 +19,11 @@ public class SimpleList {
 
 	private final int INIT_LIST_LENGTH = 10;
 	private final int NOT_IN_LIST = -1;
+	private final int LIST_EMPTY = -1;
 
 	private int[] list;
 	private int count;
-	private int capacity;
+	private int size;
 	
 /**
  * This method moves the contents of one list into another 
@@ -52,7 +53,7 @@ public class SimpleList {
 	public SimpleList() {
 		this.list = new int[INIT_LIST_LENGTH];
 		this.count = 0;
-		this.capacity = INIT_LIST_LENGTH;
+		this.size = INIT_LIST_LENGTH;
 	}
 	
 /**
@@ -66,17 +67,17 @@ public class SimpleList {
 /**
  * This method adds the parameter to the beginning (index = 0) of the list,
  * and moves all the other integers in the list over. If the list is full, 
- * then the list's capacity is increased by 50%
+ * then the list's size is increased by 50%
  * @param an int value to be added to the list
  */
 	public void add(int userVal) {
 		int temp1 = 0;
 		int temp2;
 
-		// if this list is full, increase the capacity by 50%
-		if(this.count() == this.capacity) {
-			this.capacity = this.capacity + this.capacity / 2;
-			this.list = moveList(this.list, this.count(), this.capacity, 1);
+		// if this list is full, increase the size by 50%
+		if(this.count() == this.size) {
+			this.size = this.size + this.size / 2;
+			this.list = moveList(this.list, this.count(), this.size, 1);
 			this.list[0] = userVal;
 		} else {
 			// shift all elements by one index value
@@ -134,10 +135,10 @@ public class SimpleList {
 				index++;
 			}
 		
-		// if the list is less than 75% full, decrease list capacity by 25%
-		if(this.count() < 3 * this.capacity / 4) {
-			this.capacity = 3 * this.capacity / 4;
-			this.list = moveList(this.list, this.count, this.capacity, 0);
+		// if the list is less than 75% full, decrease list size by 25%
+		if(this.count() < 3 * this.size / 4) {
+			this.size = 3 * this.size / 4;
+			this.list = moveList(this.list, this.count, this.size, 0);
 		}
 		
 	}
@@ -192,5 +193,59 @@ public class SimpleList {
 		}
 
 		return NOT_IN_LIST;
+	}
+
+/**
+ * This method appends the parameter to the end of the list.
+ * If the list is full at the time of calling, then the list's size is
+ * increased by 50%
+ * @param value to be appended to the list
+ */
+	public void append(int value) {
+
+		if(this.count() == this.size) {
+			this.size = this.size + this.size / 2;
+			this.list = moveList(this.list, this.count(), this.size, 0);
+			this.list[this.count] = value;
+		} else 
+			this.list[this.count] = value; 
+
+		this.count += 1;
+	}
+	
+/**
+ * This method returns the first element in the list.
+ * If there are no elements in the list, -1 is returned.
+ * @return the first element in the list (or -1 if the list is empty)
+ */
+	public int first() {
+		int result = -1;
+		
+		if(this.count != 0)
+			result = this.list[0];
+
+		return result;
+	}
+	
+/**
+ * This method returns the last element in the list.
+ * If there are no elements in the list, -1 is returned.
+ * @return the last element in the list (or -1 if the list is empty)
+ */
+	public int last() {
+		int result = -1;
+		
+		if(this.count != 0)
+			result = this.list[count - 1];
+		
+		return result;
+	}
+	
+/**
+ * This method returns the current number of possible locations in the list.
+ * @return the current number of possible locations in the list.
+ */
+	public int size() {
+		return this.size;
 	}
 }

@@ -443,4 +443,114 @@ class SimpleListTest2 {
 		assertEquals(expectedOutput, actualOutput);
 	}
 
+	// test case when calling append() on an empty list
+	@Test
+	void testAppend1() {
+		int expectedCount;
+		int actualCount;
+		boolean passTest;
+		SimpleList list1 = new SimpleList();
+		
+		list1.append(69);
+		
+		// check if count is updated correctly
+		expectedCount = 1;
+		actualCount = list1.count();
+		
+		// check if list is created correctly
+		int[] expectedList1 = {69, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		int[] actualList1 = list1.getList();
+
+		passTest = expectedCount == actualCount && Arrays.equals(expectedList1, actualList1);
+		
+		assertTrue(passTest);
+	}
+	
+	// test case when calling append() on a non-empty list
+	@Test
+	void testAppend2() {
+		int expectedCount;
+		int actualCount;
+		boolean passTest;
+		SimpleList list2 = new SimpleList();
+		
+		list2.add(420);
+		list2.add(1017);
+		list2.append(69);
+		
+		// check if count is updated correctly
+		expectedCount = 3;
+		actualCount = list2.count();
+		
+		// check if list is created correctly
+		int[] expectedList2 = {1017, 420, 69, 0, 0, 0, 0, 0, 0, 0};
+		int[] actualList2 = list2.getList();
+
+		passTest = expectedCount == actualCount && Arrays.equals(expectedList2, actualList2);
+		
+		assertTrue(passTest);
+	}
+	
+	// test case when calling first() on an empty list
+	@Test
+	void testFirst1() {
+		int expectedOutput;
+		int actualOutput;
+		
+		SimpleList list1 = new SimpleList();
+		
+		expectedOutput = -1;
+		actualOutput = list1.first();
+		
+		assertEquals(expectedOutput, actualOutput);
+
+	}
+	
+	// test case when calling first() on a non-empty list
+	@Test
+	void testFirst2() {
+		int expectedOutput;
+		int actualOutput;
+		
+		SimpleList list2 = new SimpleList();
+		list2.add(69);
+		list2.add(1017);
+
+		expectedOutput = 1017;
+		actualOutput = list2.first();
+		
+		assertEquals(expectedOutput, actualOutput);
+	}
+	
+	// test case when calling last() on an empty list
+	@Test
+	void testLast1() {
+		int expectedOutput;
+		int actualOutput;
+		
+		SimpleList list1 = new SimpleList();
+		
+		expectedOutput = -1;
+		actualOutput = list1.last();
+		
+		assertEquals(expectedOutput, actualOutput);
+
+	}
+	
+	// test case when calling last() on a non-empty list
+	@Test
+	void testLast2() {
+		int expectedOutput;
+		int actualOutput;
+		
+		SimpleList list2 = new SimpleList();
+		list2.add(1017);
+		list2.add(69);
+
+		expectedOutput = 1017;
+		actualOutput = list2.last();
+		
+		assertEquals(expectedOutput, actualOutput);
+	}
+	
 }
