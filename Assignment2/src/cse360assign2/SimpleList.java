@@ -180,16 +180,19 @@ public class SimpleList {
 
 		boolean isInList = false;
 		int index = 0;
+		int result = -1;
 
 		while(!isInList && index < this.count()) {
 
-			if(this.list[index] == value)
-				return index;
+			if(this.list[index] == value) {
+				result = index;
+				isInList = true;
+			}
 
 			index += 1;
 		}
 
-		return -1;
+		return result;
 	}
 
 /**
